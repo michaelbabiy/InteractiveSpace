@@ -51,7 +51,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     }
     
     func setupPinchGestureRecognizer() {
-        self.collectionView.addGestureRecognizer(UIPinchGestureRecognizer(target: self, action: "handlePinchGestureRecognizer:"))
+        self.collectionView.addGestureRecognizer(UIPinchGestureRecognizer(target: self, action: #selector(ViewController.handlePinchGestureRecognizer(_:))))
     }
     
     func handlePinchGestureRecognizer(gesture: UIPinchGestureRecognizer) {
