@@ -8,8 +8,8 @@
 
 import UIKit
 
-class CustomCollectionViewCell: UICollectionViewCell {
-    
+class CustomCollectionViewCell: UICollectionViewCell
+{
     @IBOutlet weak var imageView: UIImageView!
     
     var image: UIImage? {
@@ -17,5 +17,4 @@ class CustomCollectionViewCell: UICollectionViewCell {
             self.imageView.image = self.image
         }
     }
-    
 }
