@@ -8,15 +8,16 @@
 
 import UIKit
 
-class FlexibleFlowLayout: UICollectionViewFlowLayout {
-    
+class FlexibleFlowLayout: UICollectionViewFlowLayout
+{
     let frame: CGRect
     let columns: Int
     let interitemSpacing: CGFloat
     let lineSpacing: CGFloat
     let interitemSpacingOffset: CGFloat
     
-    init(frame: CGRect = UIScreen.mainScreen().bounds, colums: Int = 3, interitemSpacing: CGFloat = 2.0, lineSpacing: CGFloat = 2.0) {
+    init(frame: CGRect = UIScreen.main.bounds, colums: Int = 3, interitemSpacing: CGFloat = 2.0, lineSpacing: CGFloat = 2.0)
+    {
         self.frame = frame
         self.columns = colums
         self.interitemSpacing = interitemSpacing
@@ -27,16 +28,17 @@ class FlexibleFlowLayout: UICollectionViewFlowLayout {
         self.setup()
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder)
+    {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setup() {
-        let availableWidth = CGRectGetWidth(self.frame) - self.interitemSpacingOffset
+    func setup()
+    {
+        let availableWidth = self.frame.width - self.interitemSpacingOffset
         let itemWidth = availableWidth / CGFloat(self.columns)
         self.minimumInteritemSpacing = self.interitemSpacing
         self.minimumLineSpacing = self.lineSpacing
         self.itemSize = CGSize(width: itemWidth, height: itemWidth)
-    }
-    
+    }    
 }

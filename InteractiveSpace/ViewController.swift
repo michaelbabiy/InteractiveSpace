@@ -8,8 +8,8 @@
 
 import UIKit
 
-class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
-
+class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource
+{
     @IBOutlet weak var collectionView: UICollectionView!
     
     let smallLayout = FlexibleFlowLayout(colums: 3)
@@ -28,52 +28,58 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         }
     }
     
-    override func viewDidLoad() {
+    override func viewDidLoad()
+    {
         super.viewDidLoad()
         self.setupAppearance()
         self.setupSource()
         self.setupPinchGestureRecognizer()
     }
 
-    override func didReceiveMemoryWarning() {
+    override func didReceiveMemoryWarning()
+    {
         super.didReceiveMemoryWarning()
     }
     
-    func setupAppearance() {
+    func setupAppearance()
+    {
         self.collectionView.collectionViewLayout = self.smallLayout
     }
     
-    func setupSource() {
+    func setupSource()
+    {
         for i in 0...7 {
             guard let image = UIImage(named: "\(i)") else {return}
             self.datasource.append(image)
         }
     }
     
-    func setupPinchGestureRecognizer() {
+    func setupPinchGestureRecognizer()
+    {
         self.collectionView.addGestureRecognizer(UIPinchGestureRecognizer(target: self, action: #selector(ViewController.handlePinchGestureRecognizer(_:))))
     }
     
-    func handlePinchGestureRecognizer(gesture: UIPinchGestureRecognizer) {
+    func handlePinchGestureRecognizer(_ gesture: UIPinchGestureRecognizer)
+    {
         if gesture.velocity < 0 && self.collectionView.collectionViewLayout == self.smallLayout { return }
         
         if self.postPinchTransitionCompleted {
             
             // ... Gesture Began ... //
-            if (gesture.state == .Began) {
+            if (gesture.state == .began) {
                 self.initialPinchScale = gesture.scale
                 self.pinchDirectionDetermined = false
             }
             
-            if (gesture.state == .Changed) && self.pinchDirectionDetermined == false {
+            if (gesture.state == .changed) && self.pinchDirectionDetermined == false {
                 
                 self.pinchDirectionDetermined = true
-                self.pinchPoint = gesture.locationInView(gesture.view)
+                self.pinchPoint = gesture.location(in: gesture.view)
                 
                 let endLayout = self.nextLayoutForVelocity(gesture.velocity)
                 
                 if endLayout != self.collectionView.collectionViewLayout {
-                    self.transitionLayout = self.collectionView.startInteractiveTransitionToCollectionViewLayout(endLayout, completion: { (completed, finished) -> Void in
+                    self.transitionLayout = self.collectionView.startInteractiveTransition(to: endLayout, completion: { (completed, finished) -> Void in
                         if completed {
                             self.transitionLayout = nil
                             self.postPinchTransitionCompleted = true
@@ -86,14 +92,15 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             transitionLayout.transitionProgress = fabs(self.initialPinchScale - gesture.scale) / self.initialPinchScale
             
             // ... Gesture Ended ... //
-            if (gesture.state == .Ended) {
+            if (gesture.state == .ended) {
                 transitionLayout.transitionProgress > 0.25 ? self.collectionView.finishInteractiveTransition() : self.collectionView.cancelInteractiveTransition()
                 self.postPinchTransitionCompleted = false
             }
         }
     }
     
-    func nextLayoutForVelocity(velocity: CGFloat) -> UICollectionViewFlowLayout {
+    func nextLayoutForVelocity(_ velocity: CGFloat) -> UICollectionViewFlowLayout
+    {
         if velocity > 0 {
             if self.collectionView.collectionViewLayout == self.smallLayout {
                 return self.mediumLayout;
@@ -113,15 +120,15 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     
     // MARK: UICollectionView
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
+    {
         return self.datasource.count
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let customCell = collectionView.dequeueReusableCellWithReuseIdentifier("CustomCollectionViewCell", forIndexPath: indexPath) as! CustomCollectionViewCell
-        customCell.image = self.datasource[indexPath.row]
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
+    {
+        let customCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CustomCollectionViewCell", for: indexPath) as! CustomCollectionViewCell
+        customCell.image = self.datasource[(indexPath as NSIndexPath).row]
         return customCell
     }
-
-
 }
